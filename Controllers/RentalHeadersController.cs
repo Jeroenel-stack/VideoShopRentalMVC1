@@ -10,22 +10,22 @@ using VideoShopRentalMVC1.Models;
 
 namespace VideoShopRentalMVC1.Controllers
 {
-    public class RentalsController : Controller
+    public class RentalHeadersController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public RentalsController(ApplicationDbContext context)
+        public RentalHeadersController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Rentals
+        // GET: RentalHeaders
         public async Task<IActionResult> Index()
         {
             return View(await _context.Rental.ToListAsync());
         }
 
-        // GET: Rentals/Details/5
+        // GET: RentalHeaders/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace VideoShopRentalMVC1.Controllers
                 return NotFound();
             }
 
-            var rental = await _context.Rental
+            var rentalHeader = await _context.Rental
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (rental == null)
+            if (rentalHeader == null)
             {
                 return NotFound();
             }
 
-            return View(rental);
+            return View(rentalHeader);
         }
 
-        // GET: Rentals/Create
+        // GET: RentalHeaders/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Rentals/Create
+        // POST: RentalHeaders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerId,Customers,RentedDate,ReturnDate")] Rental rental)
+        public async Task<IActionResult> Create([Bind("Id,CustomerId,Customers,RentedDate,ReturnDate")] RentalHeader rentalHeader)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(rental);
+                _context.Add(rentalHeader);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(rental);
+            return View(rentalHeader);
         }
 
-        // GET: Rentals/Edit/5
+        // GET: RentalHeaders/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace VideoShopRentalMVC1.Controllers
                 return NotFound();
             }
 
-            var rental = await _context.Rental.FindAsync(id);
-            if (rental == null)
+            var rentalHeader = await _context.Rental.FindAsync(id);
+            if (rentalHeader == null)
             {
                 return NotFound();
             }
-            return View(rental);
+            return View(rentalHeader);
         }
 
-        // POST: Rentals/Edit/5
+        // POST: RentalHeaders/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,Customers,RentedDate,ReturnDate")] Rental rental)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,Customers,RentedDate,ReturnDate")] RentalHeader rentalHeader)
         {
-            if (id != rental.Id)
+            if (id != rentalHeader.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace VideoShopRentalMVC1.Controllers
             {
                 try
                 {
-                    _context.Update(rental);
+                    _context.Update(rentalHeader);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RentalExists(rental.Id))
+                    if (!RentalHeaderExists(rentalHeader.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace VideoShopRentalMVC1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(rental);
+            return View(rentalHeader);
         }
 
-        // GET: Rentals/Delete/5
+        // GET: RentalHeaders/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,32 +124,32 @@ namespace VideoShopRentalMVC1.Controllers
                 return NotFound();
             }
 
-            var rental = await _context.Rental
+            var rentalHeader = await _context.Rental
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (rental == null)
+            if (rentalHeader == null)
             {
                 return NotFound();
             }
 
-            return View(rental);
+            return View(rentalHeader);
         }
 
-        // POST: Rentals/Delete/5
+        // POST: RentalHeaders/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var rental = await _context.Rental.FindAsync(id);
-            if (rental != null)
+            var rentalHeader = await _context.Rental.FindAsync(id);
+            if (rentalHeader != null)
             {
-                _context.Rental.Remove(rental);
+                _context.Rental.Remove(rentalHeader);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool RentalExists(int id)
+        private bool RentalHeaderExists(int id)
         {
             return _context.Rental.Any(e => e.Id == id);
         }

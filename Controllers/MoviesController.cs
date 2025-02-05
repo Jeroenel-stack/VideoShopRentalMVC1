@@ -54,7 +54,7 @@ namespace VideoShopRentalMVC1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Title,Genre,ReleaseDate,Price")] Movie movie)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace VideoShopRentalMVC1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Genre,Price")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Genre,ReleaseDate,Price")] Movie movie)
         {
             if (id != movie.Id)
             {

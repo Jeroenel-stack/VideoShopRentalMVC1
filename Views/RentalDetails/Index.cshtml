@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<VideoShopRentalMVC1.Models.RentalDetail>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "RentalDetails";
 }
 
-<h1>Index</h1>
+<h1>RentalDetails</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -12,9 +12,6 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.RentalHeaderId)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.MovieId)
             </th>
@@ -30,9 +27,6 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RentalHeaderId)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MovieId)
             </td>

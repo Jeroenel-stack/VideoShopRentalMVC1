@@ -2,16 +2,16 @@
 
 namespace VideoShopRentalMVC1.Models
 {
-    public partial class Rental
+    public partial class RentalHeader
     {
        
         
             [Key]
             public int Id { get; set; }
             [Required]
-            public string CustomerId { get; set; }
+            public string? CustomerId { get; set; }
             [Required]
-            public string Customers { get; set; }
+            public string? Customers { get; set; }
             [Required]
             public DateOnly RentedDate { get; set; }
             [Required]

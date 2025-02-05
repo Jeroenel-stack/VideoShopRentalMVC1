@@ -12,8 +12,8 @@ using VideoShopRentalMVC1.Data;
 namespace VideoShopRentalMVC1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250204084620_Initial")]
-    partial class Initial
+    [Migration("20250204123717_Remigrat")]
+    partial class Remigrat
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,6 +50,32 @@ namespace VideoShopRentalMVC1.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "94c86b13-d5ac-42d8-ad62-c0dad5b75472",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        },
+                        new
+                        {
+                            Id = "9e650ddf-87d8-4bc1-8eca-ed1ddbedc99e",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "631b0a41-d7b2-4f3c-91fe-225372a527dc",
+                            Name = "Guest",
+                            NormalizedName = "GUEST"
+                        },
+                        new
+                        {
+                            Id = "76ba2c83-352c-4578-bc1d-247ac1ab257d",
+                            Name = "Moderator",
+                            NormalizedName = "MODERATOR"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -236,15 +262,16 @@ namespace VideoShopRentalMVC1.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -267,6 +294,9 @@ namespace VideoShopRentalMVC1.Data.Migrations
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -276,7 +306,35 @@ namespace VideoShopRentalMVC1.Data.Migrations
                     b.ToTable("Movie");
                 });
 
-            modelBuilder.Entity("VideoShopRentalMVC1.Models.Rental", b =>
+            modelBuilder.Entity("VideoShopRentalMVC1.Models.RentalDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Movies")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<int>("RentalHeaderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RentalHeaderId");
+
+                    b.ToTable("RentalDetail");
+                });
+
+            modelBuilder.Entity("VideoShopRentalMVC1.Models.RentalHeader", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -301,77 +359,6 @@ namespace VideoShopRentalMVC1.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rental");
-                });
-
-            modelBuilder.Entity("VideoShopRentalMVC1.Models.RentalDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("MovieId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Movies")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("RentalHeaderId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RentalId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("RentalReturnId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RentalId");
-
-                    b.HasIndex("RentalReturnId");
-
-                    b.ToTable("RentalDetail");
-                });
-
-            modelBuilder.Entity("VideoShopRentalMVC1.Models.RentalReturn", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("LateFee")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("RentalId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("ReturnDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.HasIndex("RentalId");
-
-                    b.ToTable("RentalReturn");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -427,42 +414,16 @@ namespace VideoShopRentalMVC1.Data.Migrations
 
             modelBuilder.Entity("VideoShopRentalMVC1.Models.RentalDetail", b =>
                 {
-                    b.HasOne("VideoShopRentalMVC1.Models.Rental", null)
+                    b.HasOne("VideoShopRentalMVC1.Models.RentalHeader", null)
                         .WithMany("RentalDetails")
-                        .HasForeignKey("RentalId");
-
-                    b.HasOne("VideoShopRentalMVC1.Models.RentalReturn", null)
-                        .WithMany("ReturnedDetails")
-                        .HasForeignKey("RentalReturnId");
-                });
-
-            modelBuilder.Entity("VideoShopRentalMVC1.Models.RentalReturn", b =>
-                {
-                    b.HasOne("VideoShopRentalMVC1.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("RentalHeaderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("VideoShopRentalMVC1.Models.Rental", "Rental")
-                        .WithMany()
-                        .HasForeignKey("RentalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-
-                    b.Navigation("Rental");
                 });
 
-            modelBuilder.Entity("VideoShopRentalMVC1.Models.Rental", b =>
+            modelBuilder.Entity("VideoShopRentalMVC1.Models.RentalHeader", b =>
                 {
                     b.Navigation("RentalDetails");
-                });
-
-            modelBuilder.Entity("VideoShopRentalMVC1.Models.RentalReturn", b =>
-                {
-                    b.Navigation("ReturnedDetails");
                 });
 #pragma warning restore 612, 618
         }
