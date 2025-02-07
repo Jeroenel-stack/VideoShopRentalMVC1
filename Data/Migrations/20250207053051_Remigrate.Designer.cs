@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VideoShopRentalMVC1.Data;
 
@@ -11,9 +12,11 @@ using VideoShopRentalMVC1.Data;
 namespace VideoShopRentalMVC1.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250207053051_Remigrate")]
+    partial class Remigrate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,25 +54,25 @@ namespace VideoShopRentalMVC1.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "cbccb3d8-8579-4218-825e-44179cf17614",
+                            Id = "0eeefa2d-90fc-42dc-b23f-a4f47f652dfb",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0373aa2e-44b0-4ecf-88e3-b33f74148486",
+                            Id = "d2b723ee-4071-4b36-a00c-420ee2feefbb",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "1c1f9f59-c17f-46ca-bc3f-eebb0f0ca01b",
+                            Id = "86fe6c62-8de8-4577-9fb3-747b2d90d140",
                             Name = "Guest",
                             NormalizedName = "GUEST"
                         },
                         new
                         {
-                            Id = "90eace50-d02f-4a06-950e-c13e74a69814",
+                            Id = "d0fccd75-ca41-4a10-939c-aa50830597cb",
                             Name = "Moderator",
                             NormalizedName = "MODERATOR"
                         });
@@ -293,9 +296,6 @@ namespace VideoShopRentalMVC1.Data.Migrations
 
                     b.Property<DateTime>("ReleaseDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ThumbnailUrl")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()

@@ -22,7 +22,8 @@ namespace VideoShopRentalMVC1.Controllers
         // GET: RentalDetails
         public async Task<IActionResult> Index()
         {
-            return View(await _context.RentalDetail.ToListAsync());
+            var applicationDbContext = _context.RentalDetail.Include(r => r.Movie).Include(r => r.RentalHeader);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: RentalDetails/Details/5
@@ -34,6 +35,8 @@ namespace VideoShopRentalMVC1.Controllers
             }
 
             var rentalDetail = await _context.RentalDetail
+                .Include(r => r.Movie)
+                .Include(r => r.RentalHeader)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rentalDetail == null)
             {
@@ -46,6 +49,8 @@ namespace VideoShopRentalMVC1.Controllers
         // GET: RentalDetails/Create
         public IActionResult Create()
         {
+            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Genre");
+            ViewData["RentalHeaderId"] = new SelectList(_context.Rental, "Id", "Id");
             return View();
         }
 
@@ -54,7 +59,7 @@ namespace VideoShopRentalMVC1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RentalHeaderId,MovieId,Movies,Price")] RentalDetail rentalDetail)
+        public async Task<IActionResult> Create([Bind("Id,RentalHeaderId,MovieId,Price")] RentalDetail rentalDetail)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +67,8 @@ namespace VideoShopRentalMVC1.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Genre", rentalDetail.MovieId);
+            ViewData["RentalHeaderId"] = new SelectList(_context.Rental, "Id", "Id", rentalDetail.RentalHeaderId);
             return View(rentalDetail);
         }
 
@@ -78,6 +85,8 @@ namespace VideoShopRentalMVC1.Controllers
             {
                 return NotFound();
             }
+            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Genre", rentalDetail.MovieId);
+            ViewData["RentalHeaderId"] = new SelectList(_context.Rental, "Id", "Id", rentalDetail.RentalHeaderId);
             return View(rentalDetail);
         }
 
@@ -86,7 +95,7 @@ namespace VideoShopRentalMVC1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RentalHeaderId,MovieId,Movies,Price")] RentalDetail rentalDetail)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RentalHeaderId,MovieId,Price")] RentalDetail rentalDetail)
         {
             if (id != rentalDetail.Id)
             {
@@ -113,6 +122,8 @@ namespace VideoShopRentalMVC1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["MovieId"] = new SelectList(_context.Movie, "Id", "Genre", rentalDetail.MovieId);
+            ViewData["RentalHeaderId"] = new SelectList(_context.Rental, "Id", "Id", rentalDetail.RentalHeaderId);
             return View(rentalDetail);
         }
 
@@ -125,6 +136,8 @@ namespace VideoShopRentalMVC1.Controllers
             }
 
             var rentalDetail = await _context.RentalDetail
+                .Include(r => r.Movie)
+                .Include(r => r.RentalHeader)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rentalDetail == null)
             {

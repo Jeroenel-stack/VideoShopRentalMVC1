@@ -14,6 +14,7 @@ namespace VideoShopRentalMVC1.Models
         public DateTime ReleaseDate { get; set; }
         [Required]
         public double Price { get; set; }
+        public string? ThumbnailUrl { get; set; }
 
     }
 }

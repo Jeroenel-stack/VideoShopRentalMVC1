@@ -95,6 +95,7 @@ namespace VideoShopRentalMVC1.Controllers
 
             if (ModelState.IsValid)
             {
+
                 try
                 {
                     _context.Update(movie);

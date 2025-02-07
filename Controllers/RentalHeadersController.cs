@@ -22,7 +22,8 @@ namespace VideoShopRentalMVC1.Controllers
         // GET: RentalHeaders
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Rental.ToListAsync());
+            var applicationDbContext = _context.Rental.Include(r => r.CustomerDetails);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: RentalHeaders/Details/5
@@ -34,6 +35,7 @@ namespace VideoShopRentalMVC1.Controllers
             }
 
             var rentalHeader = await _context.Rental
+                .Include(r => r.CustomerDetails)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rentalHeader == null)
             {
@@ -46,6 +48,7 @@ namespace VideoShopRentalMVC1.Controllers
         // GET: RentalHeaders/Create
         public IActionResult Create()
         {
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name");
             return View();
         }
 
@@ -54,7 +57,7 @@ namespace VideoShopRentalMVC1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CustomerId,Customers,RentedDate,ReturnDate")] RentalHeader rentalHeader)
+        public async Task<IActionResult> Create([Bind("Id,CustomerId,RentedDate,ReturnDate")] RentalHeader rentalHeader)
         {
             if (ModelState.IsValid)
             {
@@ -62,6 +65,7 @@ namespace VideoShopRentalMVC1.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", rentalHeader.CustomerId);
             return View(rentalHeader);
         }
 
@@ -78,6 +82,7 @@ namespace VideoShopRentalMVC1.Controllers
             {
                 return NotFound();
             }
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", rentalHeader.CustomerId);
             return View(rentalHeader);
         }
 
@@ -86,7 +91,7 @@ namespace VideoShopRentalMVC1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,Customers,RentedDate,ReturnDate")] RentalHeader rentalHeader)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CustomerId,RentedDate,ReturnDate")] RentalHeader rentalHeader)
         {
             if (id != rentalHeader.Id)
             {
@@ -113,6 +118,7 @@ namespace VideoShopRentalMVC1.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "Id", "Name", rentalHeader.CustomerId);
             return View(rentalHeader);
         }
 
@@ -125,6 +131,7 @@ namespace VideoShopRentalMVC1.Controllers
             }
 
             var rentalHeader = await _context.Rental
+                .Include(r => r.CustomerDetails)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (rentalHeader == null)
             {
